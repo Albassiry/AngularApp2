@@ -1,18 +1,25 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterOutlet } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Task } from './models/task';
-import { TaskService } from './services/task.service';
-import { TruncatePipe } from './pipes/truncate.pipe';
-import { PriorityHighlightDirective } from './directives/priority-highlight.directive';
+import { TaskService } from './services/task';
+import { TruncatePipe } from './pipes/truncate-pipe';
+import { PriorityHighlightDirective } from './directives/priority-highlight';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, FormsModule, TruncatePipe, PriorityHighlightDirective],
+  imports: [
+    CommonModule, 
+    FormsModule, 
+    RouterOutlet, 
+    TruncatePipe, 
+    PriorityHighlightDirective
+  ],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrl: './app.css'
 })
 export class AppComponent {
   title = 'AngularApp2 - Task Tracker';

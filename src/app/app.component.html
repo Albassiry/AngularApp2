@@ -1,0 +1,41 @@
+<div class="container" style="max-width: 600px; margin: 40px auto; font-family: sans-serif;">
+  <h1>{{ title }}</h1>
+
+  <!-- Task Creation Form -->
+  <form (ngSubmit)="onSubmit()" style="background: #f4f4f4; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+    <h3>Add New Task</h3>
+    <div style="margin-bottom: 10px;">
+      <input type="text" [(ngModel)]="newTitle" name="newTitle" placeholder="Task Title" required style="width: 100%; padding: 8px;" />
+    </div>
+    <div style="margin-bottom: 10px;">
+      <textarea [(ngModel)]="newDescription" name="newDescription" placeholder="Task Description" style="width: 100%; padding: 8px;"></textarea>
+    </div>
+    <div style="margin-bottom: 10px;">
+      <label>Priority: </label>
+      <select [(ngModel)]="newPriority" name="newPriority" style="padding: 5px;">
+        <option value="Low">Low</option>
+        <option value="Medium">Medium</option>
+        <option value="High">High</option>
+      </select>
+    </div>
+    <button type="submit" style="background: #007bff; color: white; border: none; padding: 10px 15px; cursor: pointer; border-radius: 4px;">Add Task</button>
+  </form>
+
+  <!-- Task List -->
+  <h2>Task List</h2>
+  <ul style="list-style: none; padding: 0;">
+    <li *ngFor="let task of tasks$ | async" [appPriorityHighlight]="task.priority" style="background: #fff; border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center;">
+      <div>
+        <h4 [style.text-decoration]="task.completed ? 'line-through' : 'none'">{{ task.title }}</h4>
+        <p>{{ task.description | truncate:50 }}</p>
+        <small>Priority: <strong>{{ task.priority }}</strong> | Due: {{ task.dueDate }}</small>
+      </div>
+      <div>
+        <button (click)="toggleComplete(task.id!)" style="margin-right: 5px; padding: 5px 10px;">{{ task.completed ? 'Undo' : 'Complete' }}</button>
+        <button (click)="deleteTask(task.id!)" style="background: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 3px;">Delete</button>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<router-outlet></router-outlet>
