@@ -1,13 +1,55 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>AngularApp2</title>
-  <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-</head>
-<body>
-  <app-root></app-root>
-</body>
-</html>
+<div class="container mt-4">
+  <h2>{{ title }}</h2>
+
+  <!-- Task Creation Form -->
+  <form (submit)="onSubmit()" class="card p-3 my-3 shadow-sm">
+    <h4>Add New Task</h4>
+    <div class="mb-2">
+      <label>Title:</label>
+      <input type="text" [(ngModel)]="newTitle" name="title" class="form-control" required />
+    </div>
+    <div class="mb-2">
+      <label>Description:</label>
+      <input type="text" [(ngModel)]="newDescription" name="description" class="form-control" />
+    </div>
+    <div class="mb-2">
+      <label>Priority:</label>
+      <select [(ngModel)]="newPriority" name="priority" class="form-control">
+        <option value="Low">Low</option>
+        <option value="Medium">Medium</option>
+        <option value="High">High</option>
+      </select>
+    </div>
+    <div class="mb-2">
+      <label>Due Date:</label>
+      <input type="date" [(ngModel)]="newDueDate" name="dueDate" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Add Task</button>
+  </form>
+
+  <!-- Task List Display using Async Pipe & Custom Directive/Pipe -->
+  <h3 class="mt-4">Task List</h3>
+  <div class="list-group">
+    <div *ngFor="let task of tasks$ | async" 
+         class="list-group-item my-2 shadow-sm p-3"
+         [appPriorityHighlight]="task.priority">
+      
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h5 [style.text-decoration]="task.completed ? 'line-through' : 'none'">
+            {{ task.title }} <span class="badge bg-secondary">{{ task.priority }}</span>
+          </h5>
+          <p class="mb-1 text-muted">{{ task.description | truncate:50 }}</p>
+          <small>Due: {{ task.dueDate }}</small>
+        </div>
+        <div>
+          <button class="btn btn-sm btn-success me-2" (click)="toggleComplete(task.id)">
+            {{ task.completed ? 'Mark Incomplete' : 'Complete' }}
+          </button>
+          <button class="btn btn-sm btn-danger" (click)="deleteTask(task.id)">Delete</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
